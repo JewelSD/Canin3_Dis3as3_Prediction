@@ -1,0 +1,4 @@
+0 flea_allergy
+1 hotspot
+2 mange
+3 ringworm

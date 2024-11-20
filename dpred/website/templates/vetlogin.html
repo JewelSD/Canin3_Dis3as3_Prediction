@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html>
+{% load static%}
+<head>
+    <title>Vet Login</title>
+    <style>
+        body {
+            background-color: black;
+            color: white;
+            font-family: Arial, sans-serif;
+        }
+
+        .container {
+            width: 50%;
+            padding: 50px;
+            margin: 50px auto;
+            background-color: rgba(0, 0, 0, 0.5);
+            border: 1px solid blue;
+            border-radius: 5px;
+        }
+
+        .username,
+        .password {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 10px;
+            border: none;
+            border-radius: 5px;
+            background-color: rgba(6, 6, 6, 0.5);
+            color: white;
+        }
+
+        .login-button {
+            width: 100%;
+            padding: 10px;
+            background-color: white;
+            color: black;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        .login-button:hover {
+            background-color: #eee;
+        }
+
+        .button2:hover {
+            background-color: #002fda;
+            color: white;
+            transition: all .6s ease-out;
+            background-position: left bottom;
+            transition: all .5s ease-out;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <ceneter>
+            <h1 style="text-align: center">Veterinarian<br>Login</h1>
+            <img src="{% static 'img/veterinarian_2500594.png'%}" alt="Veterinarian" height="10%" width="10%">
+            </center>
+            <form action="" method="post">
+                {% csrf_token %}
+            <input type="text" id ="username" name="username"class="username" placeholder="Username">
+            <input type="password" id="password" name="password" class="password" placeholder="Password">
+            <div style="background-position: left bottom;"><button onclick="myfunction"class="login-button button2">Sign in</button></div>
+            </form>
+    </div>
+    {% if messages %}
+        <script>
+            {% for message in messages %}
+                let error="{{ message }}";
+                alert(error);
+            {% endfor %}
+        </script>
+    {% endif %}
+        
+</body>
+
+</html>

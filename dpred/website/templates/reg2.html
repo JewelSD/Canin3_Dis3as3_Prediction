@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <title>Global</title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="description" content="HTML5 website template">
+  <meta name="keywords" content="global, template, html, sass, jquery">
+  <meta name="author" content="Bucky Maler">
+  <link rel="stylesheet" href="static/css/main.css">
+</head>
+
+<body>
+    {% comment %} <ul class="l-main-content main-content">
+
+    <li class="l-section section"> {% endcomment %}
+        <div style="padding=50px">
+        <div class="hire">
+          <h2 id="sem">Registration</h2>
+          <!-- checkout formspree.io for easy form setup -->
+          <form action="" method="post" class="work-request">
+            {% csrf_token %}
+            <div class="work-request--information">
+                <div class="information-name">
+                  <input id="username" name="username" type="text" spellcheck="false" required>
+                  <label for="name">UserName</label>
+                </div>
+              </div>
+              <div class="work-request--information">
+
+                <div class="information-pass">
+                  <input id="password" name="password"type="password" spellcheck="false" required>
+                  <label for="password">Password</label>
+                </div>
+              </div>
+              <div class="work-request--information">
+
+                <div class="information-email">
+                  <input id="email" name="email" type="email" spellcheck="false" required>
+                  <label for="name">Email</label>
+                </div>
+              </div>
+              <input type="submit" value="Sign up">
+            </form>
+          </div>
+        </div>
+        {% comment %} </li>
+    </ul> {% endcomment %}
+</body>
+</html>

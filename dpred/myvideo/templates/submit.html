@@ -1,0 +1,54 @@
+<html>
+
+<head>
+    <title>submit</title>
+    <style>
+        label{
+            color:white;
+        }
+            input[type="text"] {
+                border-radius: 10px; /* Adjust the border radius as needed */
+                padding: 8px; /* Add padding to make the input box more visually appealing */
+                border: 1px solid #ccc; /* Add a border for better visibility */
+                width: 200px; /* Set the width of the input box */
+            }
+            button {
+                background-color: #007bff; /* Set the background color of the button */
+                border-radius: 10px;
+                color: white; /* Set the text color of the button */
+                cursor: pointer; /* Change cursor to pointer on hover */
+                transition: background-color 0.3s ease; /* Add a smooth transition effect */
+            }
+    </style>
+</head>
+    <body bgcolor="#22092C">
+        <center>
+            <div>
+                <form action="" method="POST">
+                    {% csrf_token %}
+                    <table>
+                        <tr>
+                    <td><label>ID</label></td>
+                    <td>:<input type="text" id="id" name="aid" value="" placeholder="Enter the ID" required></td>
+                        </tr>
+                        <tr>
+                    <td><label>RoomID</label></td>
+                <td>:<input type="text" id="roomIDInput" name="roomIDInput" value="" placeholder="Enter the roomID" required></td>
+                <tr>
+                </table>
+                <br>
+            <button type="submit" value="submit">Submit</button>
+                </form>
+            </div>
+        </center> 
+
+        {% if messages %}
+        <script>
+            {% for message in messages %}
+                let error="{{ message }}";
+                alert(error);
+            {% endfor %}
+        </script>
+    {% endif %}
+    </body>
+</html>

@@ -1,0 +1,325 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Appointment</title>
+    <style>
+        body {
+            background-color: black;
+            color: white;
+            font-family: Arial, sans-serif;
+        }
+
+        .container {
+            width: 50%;
+            padding: 50px;
+            margin: 50px auto;
+            background-color: rgba(0, 0, 0, 0.5);
+            border: 1px solid blue;
+            border-radius: 5px;
+        }
+
+        .username,
+        .password {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 10px;
+            border: none;
+            border-radius: 5px;
+            background-color: rgba(6, 6, 6, 0.5);
+            color: white;
+        }
+
+        .login-button {
+            width: 100%;
+            padding: 10px;
+            background-color: white;
+            color: black;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        .login-button:hover {
+            background-color: #eee;
+        }
+
+        .button2:hover {
+            background-color: #002fda;
+            color: white;
+            transition: all .6s ease-out;
+            background-position: left bottom;
+            transition: all .5s ease-out;
+        }
+        input[type="date"] {
+            /* Set text color to black */
+            color: black;
+            /* Set background color to white */
+            background-color: white;
+            /* Border and outline styles */
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            outline: none;
+            /* Additional styles to reset default appearance in some browsers */
+            -webkit-appearance: none;
+            -moz-appearance: none;
+            appearance: none;
+          }
+          .hidden{
+            display:none;
+          }
+
+          table {
+            border-collapse: collapse;
+            width: 50%;
+            border: 3px solid darkblue;
+        }
+        th, td {
+            border: 1px solid darkblue;
+            padding: 8px;
+            text-align: left;
+        }
+        th {
+            background-color: darkblue;
+            color: white;
+        }
+        td {
+            color: white;
+        }
+
+        .hidden {
+            display: none;
+        }
+    </style>
+
+
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+</head>
+
+<body>
+<a href="{% url 'userprofile' %}" style="text-decoration: none; color: #007bff; font-size: 34px;">&#11013</a>
+<center>
+    <form id="form">
+        <label for="filter">Perform Actions:</label>
+        <select name="sele" id="sele">
+            <option value="">Select an item</option>
+            <option value="appoint">Make Appointment</option>
+            <option value="status">Check Status</option>
+        </select>
+    </form>
+</center>
+<div id="table1" class="hidden">
+    <div class="container">
+        <ceneter>
+            <h1 style="text-align: center">Make Appointment</h1>
+            </center>
+            <form action="" method="post">
+                {% csrf_token %}
+            <input type="text" id ="name" name="name"class="username" placeholder="Enter Your Name">
+            <input type="text" id="breed" name="breed" class="username" placeholder="Enter Dog Breed Name">
+            <input type="number" id="age" name="age" class="username" placeholder="Enter The Age of Dog">
+            <input type="hidden" id="user_id" name="user_id" value="{{ useid }}">
+            <label for="veterinarian">Choose a veterinarian:</label>
+            <select name="veterinarian" id="veterinarian" class="username">
+                {% for veterinarian in veterinarians %}
+                    <option value="{{ veterinarian.id }}">Dr.{{ veterinarian.name }}</option>
+                {% endfor %}
+            </select>
+            <label for="veterinarian">Description:</label>
+            <textarea id="desc" name="desc" class="username" rows="5" cols="50" placeholder="Enter the current condition of Dog"></textarea>
+            <label for="veterinarian">Date to Schedule Appointment:</label>
+            <input type="date" id="adate" name="adate" class="username" placeholder="Enter Date for Appointment" required>
+            <input type="tel" id="phone" name="phone"class="username" maxlength="10" placeholder="Enter Phone Number" required>
+            
+           
+    </div>
+    <div style="background-position: left bottom;"><button class="login-button button2">Make Appointment</button></div>
+</form>
+</div>
+
+
+<!--Status table-->
+
+<div id="table2" class="hidden">
+    <br>
+    <br>
+    <br>
+    <center>
+        <table id="appointmentTable">
+            <thead>
+                <tr>
+                    <th>Breeder Name</th>
+                    <th>Dog Breed</th>
+                    <th>Dog Age</th>
+                    <th>Phone No.</th>
+                    <th>Appointed Date</th>
+                    <th>Description</th>
+                    <th>Time Scheduled</th>
+                    <th>Status</th>
+                    <th>Doctor's Description</th>
+                    <th>Call</th>
+                    <th>RoomID</th>
+                    <th>Delete</th>
+                </tr>
+            </thead>
+            <tbody id="appointmentTableBody"></tbody>
+        </table>
+    </center>
+</div>
+
+
+<script>
+    const form = document.getElementById('form');
+    const sele = document.getElementById('sele');
+    const table1 = document.getElementById('table1');
+    const table2 = document.getElementById('table2');
+    form.addEventListener('change', () =>{
+       
+        if (sele.value === 'appoint') {
+            table1.classList.remove('hidden');
+            table2.classList.add('hidden');
+        } else if (sele.value == 'status') {
+            table1.classList.add('hidden');
+            table2.classList.remove('hidden');
+
+            fetchDetails()
+
+        } else {
+            table1.classList.add("hidden");
+            table2.classList.add("hidden");
+        }
+    });
+</script>
+
+
+
+
+{% if messages %}
+    {% for message in messages %}
+        {% if message.tags == 'error' %}
+            <script>
+                let error = "{{ message }}";
+                alert(error);
+            </script>
+        {% elif message.tags == 'success' %}
+            <script>
+                let success = "{{ message }}";
+                alert(success);
+            </script>
+        {% endif %}
+    {% endfor %}
+{% endif %}
+
+
+
+<script>
+    // Get the current date in the format YYYY-MM-DD
+    const today = new Date().toISOString().split('T')[0];
+    // Set the min attribute of the date input to the current date
+    document.getElementById("adate").setAttribute("min", today);
+
+
+    // Your JavaScript code (e.g., in a <script> tag or a separate .js file)
+    function fetchDetails() {
+    // Make an AJAX call to the server
+
+    var table = document.getElementById("appointmentTableBody");
+
+    table.innerHTML = '';
+
+    $.ajax({
+        url: '/fetch_details/',  // URL to your Django view
+        type: 'GET',
+        success: function(response) {
+           
+            appointmentsData=JSON.parse(response    )
+
+            if (appointmentsData.length == 0) {
+                table.innerHTML = '<tr><td colspan="8" style="text-align:center">No records found</td></tr>';
+            } else {
+
+                appointmentsData.forEach(function(appointment) {
+                    // Create a new row
+                    var row = table.insertRow();
+                
+                    // Insert cells into the row
+                    row.insertCell().innerHTML = appointment.fields.name;
+                    row.insertCell().innerHTML = appointment.fields.dog_breed;
+                    row.insertCell().innerHTML = appointment.fields.age;
+                    row.insertCell().innerHTML = appointment.fields.phone;
+                    row.insertCell().innerHTML = appointment.fields.date;
+                    row.insertCell().innerHTML = appointment.fields.desc;
+                    row.insertCell().innerHTML = appointment.fields.time;
+                
+                    let statusText = "Pending"; // Default value
+                    if (appointment.fields.status === 1) {
+                        statusText = "Confirmed";
+                    } else if (appointment.fields.status === 2) {
+                        statusText = "Rejected";
+                    }
+                    row.insertCell().innerHTML = statusText;
+                    row.insertCell().innerHTML = appointment.fields.doc_desc;
+                
+                    // Add a "Call" button to the row if status is confirmed
+                    if (appointment.fields.status === 1) {
+                        let button = document.createElement('button');
+                        button.textContent = 'Call';
+                        button.onclick = function() {
+                            window.location.href = 'joinvideo'; // Redirect to the appropriate page
+                        };
+                        let cell = row.insertCell();
+                        cell.appendChild(button);
+                    } else {
+                        row.insertCell(); // Insert an empty cell if status is not confirmed
+                    }
+                
+                    // Insert RoomID into the correct column
+                    row.insertCell().innerHTML = appointment.fields.roomid;
+                
+                    // Add a "Delete" button to the row
+                    var deleteButton = document.createElement('button');
+                    deleteButton.textContent = 'Delete';
+                    deleteButton.className = 'delete-button';
+                    deleteButton.setAttribute('data-id', appointment.pk);
+                    var deleteCell = row.insertCell(); // Insert the delete button in its own cell
+                    deleteCell.appendChild(deleteButton);
+                });
+        }
+
+
+        },
+            error: function(xhr, status, error) {
+            // Handle any errors
+            console.error(error);
+            alert('Error fetching appointments.');  // Log the error to the console
+        }
+    });
+}
+
+ // Event listener for delete buttons
+ $(document).on('click', '.delete-button', function() {
+    var appointmentId = $(this).data('id');
+    if (confirm('Are you sure you want to delete this appointment?')) {
+        $.ajax({
+            url: '/delete_appointment/' + appointmentId ,  // URL to your Django view for deleting appointments
+            type: 'POST',
+            success: function(response) {
+                alert(response.message);
+                // Refresh the appointment table after deletion
+                fetchDetails();
+            },
+            error: function(xhr, status, error) {
+                // Handle any errors
+                console.error(error);
+                alert('Error deleting appointment.');
+            }
+        });
+    }
+});
+
+
+    </script>     
+</body>
+
+</html>

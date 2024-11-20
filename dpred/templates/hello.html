@@ -1,0 +1,15 @@
+<h1>Hello hell</h1>
+<br />
+I saw a film named {{title}} on {{year}} were Tovino was a {{summary}}
+
+
+{% for obj in movies %}
+<h1>Title:{{obj.title}}</h1>
+<br>Year:{{obj.year}}
+<br>Summary:{{obj.summary}}
+{% if obj.rate %}
+<br>Movie is success
+{% else %}
+<br>Movie was Fail
+{% endif %}
+{% endfor %}

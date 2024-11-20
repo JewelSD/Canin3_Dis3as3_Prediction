@@ -1,0 +1,8 @@
+0 bacterial_dermatosis
+1 flea_allergy
+2 fungal_infection
+3 healthy
+4 hotspot
+5 hypersensitivity_allergic_dermatosis
+6 mange
+7 ringworm

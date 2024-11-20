@@ -1,0 +1,709 @@
+<!DOCTYPE html>
+<html>
+{%load static%}
+<body>
+
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link href="https://fonts.googleapis.com/css2?family=Alfa+Slab+One&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="style.css">
+
+    <head>
+    </head>
+
+    <style>
+        body,
+        html {
+            height: 100%;
+            padding: 0;
+            max-width: 100%;
+            margin: 0 auto;
+        }
+
+        input.largerCheckbox {
+            width: 10px;
+            height: 10px;
+        }
+
+        .halfwidth {
+            max-width: 97.3%;
+
+
+        }
+
+        .fix {
+            position: fixed;
+
+        }
+
+        .halfspace {
+            max-width: 58%;
+            height: 420px;
+        }
+
+        .rightside {
+            width: 44%;
+            height: 420px;
+        }
+        
+        .forbutton {
+            width: 10%;
+            height: 20%
+        }
+
+        .floatright {
+            float: right;
+        }
+
+        .floatleft {
+            float: left;
+        }
+
+        .hovertext {
+            position: relative;
+
+        }
+
+        .hovertext:before {
+            content: attr(data-hover);
+            visibility: hidden;
+            font-size: 15px;
+            opacity: 0;
+            width: 250px;
+            background-color: black;
+            color: #fff;
+            text-align: center;
+            border-radius: 5px;
+            padding: px 0;
+            transition: opacity 1s ease-in-out;
+
+            position: absolute;
+            z-index: 1;
+            left: 110%;
+            top: 0;
+        }
+
+        .hovertext:hover:before {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .bg {
+            /* The image used */
+            background-image: url("{% static 'img/wp5200928-black-dog-hd-wallpapers.jpg'%}");
+
+
+
+            /* Full height */
+            height: 100%;
+            opacity: 10;
+
+            /* Center and scale the image nicely */
+            background-repeat: no-repeat;
+            background-size: cover;
+            background-position: center;
+        }
+
+        * {
+            margin: 0;
+            box-sizing: border-box;
+        }
+
+        /*nav*/
+
+        nav {
+            display: -webkit-flex;
+            display: -moz-flex;
+            display: -ms-flex;
+            display: -o-flex;
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+            min-height: 5vh;
+            background: #000;
+        }
+
+        .logo {
+            color: #fff;
+            text-transform: capitalize;
+            font-size: 24px;
+            cursor: pointer;
+            font-weight: 900;
+            letter-spacing: 1px;
+        }
+
+        .logo span {
+            color: #2192FF;
+        }
+
+        .menu {
+            display: -webkit-flex;
+            display: -moz-flex;
+            display: -ms-flex;
+            display: -o-flex;
+            display: flex;
+            justify-content: space-around;
+            width: 30%;
+        }
+
+        .menu li {
+            list-style: none;
+        }
+
+        .menu a {
+            color: #fff;
+            text-decoration: none;
+            font-size: 15px;
+            padding: 25px;
+            transition: .9s;
+            font-weight: 600;
+        }
+
+        .menu a:hover {
+            color: #2192FF;
+            font-weight: 500;
+            letter-spacing: 2px;
+        }
+
+        .bar {
+            display: none;
+            cursor: pointer;
+        }
+
+        .bar div {
+            width: 25px;
+            height: 3px;
+            background-color: #000;
+            margin: 5px;
+            transition: all .5s ease;
+        }
+
+        @media screen and (max-width:1024px) {
+            .menu {
+                width: 60%;
+            }
+        }
+
+        @media screen and (max-width:768px) {
+            body {
+                overflow-x: hidden;
+            }
+
+            .menu {
+                position: absolute;
+                right: -100%;
+                height: 90vh;
+                top: 10vh;
+                background-color: #000;
+                display: -webkit-flex;
+                display: -moz-flex;
+                display: -ms-flex;
+                display: -o-flex;
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                width: 100%;
+                transform: translateX(100%);
+                transition: transform 0.5s ease-in-out;
+            }
+
+            .bar {
+                display: block;
+            }
+        }
+
+        .nav-active {
+            transform: translateX(-100%);
+        }
+
+        .bar-active .bar-1 {
+            transform: rotate(-45deg) translate(-5px, 6px);
+        }
+
+        .bar-active .bar-2 {
+            opacity: 0;
+        }
+
+        .bar-active .bar-3 {
+            transform: rotate(45deg) translate(-5px, -6px);
+        }
+
+        .btn {
+            padding: 2px 4px;
+            display: inline-block;
+            margin-top: 0;
+            background-color: transparent;
+            font-weight: 700;
+            transition: .3s;
+        }
+
+        .btn:hover {
+            color: #ffd970;
+        }
+
+        .popup {
+            display: block;
+            position: fixed;
+            padding: 50px;
+            max-width: 600px;
+            border-radius: 0.5em;
+            top: 50%;
+            left: 50%;
+            color: #000;
+            transform: translate(-50%, -50%);
+            background-color: rgba(255, 255, 255, 1);
+            opacity: 0px;
+            transition: opacity .5s, visibility 0s linear .5s;
+            z-index: 1;
+        }
+
+        .popup:before {
+            content: "";
+            background-image: url();
+            background-size: cover;
+            position: absolute;
+            filter: opacity(50%);
+            top: 0px;
+            right: 0px;
+            bottom: 0px;
+            left: 0px;
+            opacity: 3px;
+        }
+
+        .popup:target {
+            opacity: 1;
+            transition-delay: 0s;
+        }
+
+        .popup .close {
+            position: absolute;
+            right: 5px;
+            top: 5px;
+            padding: 5px;
+            color: #000;
+            transition: color .3s;
+            font-size: 2em;
+            line-height: 1.5;
+            font-weight: 700;
+        }
+
+        .popup .close:hover {
+            color: #f00;
+        }
+
+        .close-popup {
+            background-color: rgba(0, 0, 0, .7);
+            cursor: default;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity .5s, visibility 0s linear .5s;
+        }
+
+        .popup:target+.close-popup {
+            opacity: 1;
+            visibility: visible;
+            transition-delay: 0s;
+        }
+
+        .popH {
+            position: relative;
+            color: #000000;
+            line-height: 0.9;
+            text-align: justify;
+        }
+
+        a {
+            text-decoration: none;
+            display: inline-block;
+            padding: 8px 16px;
+
+        }
+
+        .previous {
+            background-color: #000000;
+            color: white;
+            position: absolute;
+            padding: 12px 16px;
+            /* Some padding */
+            cursor: pointer;
+            /* Mouse pointer on hover */
+            top: 20px;
+            left: 50px;
+        }
+
+        .previous:hover {
+            color: white;
+        }
+
+        .round {
+            border-radius: 50%;
+        }
+
+        .body {
+            width: 800px;
+            margin: 0 auto;
+        }
+
+        .legend-style {
+            border: 2px solid deepskyblue;
+        }
+
+        .button {
+            background-color: #1532d3;
+            border: none;
+            border-radius: 12px;
+            color: white;
+            padding: 15px 20px;
+            text-align: center;
+            text-decoration: none;
+            display: inline-block;
+            font-size: 15px;
+            margin: 4px 2px;
+            font-size: 15px;
+            cursor: pointer;
+            position: absolute;
+            bottom: 25px;
+            left: 230px;
+        }
+
+        .button1 {
+            background-color: #1532d3;
+            border: none;
+            border-radius: 12px;
+            color: white;
+            padding: 15px 20px;
+            text-align: center;
+            text-decoration: none;
+            display: inline-block;
+            font-size: 15px;
+            margin: 4px 2px;
+            font-size: 15px;
+            cursor: pointer;
+            position: absolute;
+            bottom: 25px;
+            right: 230px;
+        }
+
+        .results {
+            max-height: 300px;
+        }
+
+        .popup {
+            display: block;
+            position: absolute;
+            padding: 15px;
+            width: 400px;
+            border-radius: 0.5em;
+            top: 50%;
+            left: 50%;
+            color: #000;
+            transform: translate(-50%, -50%);
+            background-color: rgba(255, 255, 255, 1);
+            visibility: hidden;
+            opacity: 0px;
+            transition: opacity .5s, visibility 0s linear .5s;
+            z-index: 1;
+        }
+
+        .popup:before {
+            content: "";
+            background-image: url();
+            background-size: cover;
+            position: absolute;
+            filter: opacity(50%);
+            top: 0px;
+            right: 0px;
+            bottom: 0px;
+            left: 0px;
+            opacity: 3px;
+        }
+
+        .popup:target {
+            visibility: visible;
+            opacity: 1;
+            transition-delay: 0s;
+        }
+
+        .popup .close {
+            position: absolute;
+            right: 5px;
+            top: 5px;
+            padding: 5px;
+            color: #000;
+            transition: color .3s;
+            font-size: 2em;
+            line-height: 1.5;
+            font-weight: 700;
+        }
+
+        .popup .close:hover {
+            color: #f00;
+        }
+
+        .close-popup {
+            background-color: rgba(0, 0, 0, .7);
+            cursor: default;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity .5s, visibility 0s linear .5s;
+        }
+
+        .popup:target+.close-popup {
+            opacity: 1;
+            visibility: visible;
+            transition-delay: 0s;
+        }
+
+        .popH {
+            position: relative;
+            color: #000000;
+            line-height: 0.9;
+            text-align: justify;
+        }
+
+        .form-popup {
+            display: none;
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background-color: rgba(255, 255, 255, 0.5);
+            padding: 20px;
+            border: 1px solid #ccc;
+            z-index: 9;
+        }
+
+        /* Form Container */
+        .form-container {
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* Inputs */
+        input[type=text],
+        input[type=password] {
+            width: 100%;
+            padding: 12px;
+            margin: 8px 0;
+            border: 1px solid #ccc;
+            box-sizing: border-box;
+        }
+
+        /* Submit and Close Buttons */
+        .btn {
+            background-color: #2192FF;
+            color: white;
+            padding: 12px 20px;
+            margin: 8px 0;
+            border: none;
+            cursor: pointer;
+            width: 100%;
+        }
+
+        .cancel {
+            background-color: #e6a53e;
+        }
+
+        {% comment %} gif css {% endcomment %}
+
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            overflow: auto;
+            background-color: rgba(0,0,0,0.5);
+          }
+          
+          .modal-content {
+            background-color: #fefefe;
+            margin: 15% auto;
+            padding: 20px;
+            border: 1px solid #888;
+            width: 80%;
+            max-width: 800px;
+            border-radius: 10px;
+          }
+          
+          .close {
+            color: #aaa;
+            float: right;
+            font-size: 28px;
+            font-weight: bold;
+          }
+          
+          .close:hover,
+          .close:focus {
+            color: black;
+            text-decoration: none;
+            cursor: pointer;
+          }
+    </style>
+
+
+    <div class="bg" style="background-color: rgba(255, 255, 255, 0.1);">
+        <a href="javascript:history.back()"  style='font-size:200%;'>&#10229</a>
+
+        <script>
+            function goBack() {
+                window.history.back();
+            }
+        </script>
+
+        <!-- Main Input For Receiving Query to our ML -->
+
+            {% comment %} {% csrf_token %} {% endcomment %}
+            <center>
+                <h1 style="color:rgb(255, 255, 255);font-family: fantasy; -webkit-text-stroke-width: 1px;
+                -webkit-text-stroke-color: black;">Welcome!</h1>
+            </center>
+            <center>
+                <h2 style="color:rgb(255, 255, 255);font-family: fantasy;-webkit-text-stroke-width: 1px;
+                -webkit-text-stroke-color: black;">Upload Image of Skin Diseade<br></h2>
+            </center><br>
+            <fieldset style="background-color: rgba(0, 0, 0, 0.3);" class="floatright rightside">
+                <div style="max-height:400px;overflow:auto;">
+
+                    <div class="results">
+                        <h2><label style="color:rgb(255, 255, 255);text-shadow: 0 0 3px #505050, 0 0 5px #010101;background-color:#1532d3;height: 500px;padding: 2px;">Disease Predicted:</h2></label><br>
+
+                            <h5><label class="largerCheckbox" style="color:white;"> {{ prediction }} </label></h5><br><br>
+                        </div><br>
+
+
+                        <div class="results">
+                            <h2><label style="color:rgb(255, 255, 255);text-shadow: 0 0 3px #505050, 0 0 5px #010101;background-color:#1532d3;height: 500px;padding: 2px;">Description of Disease:</h2></label><br>
+    
+                                <h5><label class="largerCheckbox" style="color:white;"> {{ desc }} </label></h5><br><br>
+                            </div><br>
+
+
+                            <div class="results">
+                                <h2><label style="color:rgb(255, 255, 255);text-shadow: 0 0 3px #505050, 0 0 5px #010101;background-color:#1532d3;height: 500px;padding: 2px;">Remedy:</h2></label><br>
+        
+                                    <h5><label class="largerCheckbox" style="color:white;"> {{ remedy }} </label></h5><br><br>
+                                </div><br>
+
+                    {% comment %} <div class="result"><br><br>
+                        <h3><label
+                                style="color:rgb(255, 255, 255);text-shadow: 0 0 3px #505050, 0 0 5px #010101">Confidence Score:</label></h3><br>
+                        <h2><label class="largerCheckbox" style="color:white;"> {{ confidence_score }}</label></h2>
+                    </div> {% endcomment %}
+                <br><br>
+            </div>
+            </fieldset>
+
+        
+        <form id ="myForm" action="" method="POST" enctype="multipart/form-data">
+                {% csrf_token %}
+        
+            <fieldset style="background-color: rgba(0, 0, 0, 0.3);" class="halfspace">
+                <div style="max-height:400px;overflow:auto;">
+
+                    <h3>
+                        <fieldset class="halfwidth">
+
+                            <legend style="background-color:#1532d3;"> Input Image </legend>
+                            <label for="skinimg"
+                                style="color:rgb(255, 255, 255);text-shadow: 0 0 3px #505050, 0 0 5px #010101">Select
+                                Image:</label>
+                            <input type="file" name="skin" id="skin" accept="image/png,image/jpeg,image/jpg" required>
+                            <img id="previewImage" src="#" alt="Selected Image" style="display: none;" height="40%" width="40%" >
+
+                        </fieldset>
+
+
+                    </h3>
+
+                </div>
+            </fieldset>
+
+
+            <h4><button type="clearForm" onclick="clearForm()" class="button1 floatright" style="btn">Clear
+                    <i class="fa fa-paw" style="font-size:15px;"></i></button></h4>
+
+                <h4><button type="submit" class="button floatleft" style="btn">Predict
+                        <i class="fa fa-paw" style="font-size:15px"></i></button></h4>
+
+
+        </form>
+
+
+
+
+
+        <script>
+            // Get the file input and image elements
+            const imageInput = document.getElementById('skin');
+            const previewImage = document.getElementById('previewImage');
+    
+            // Listen for the change event on the file input
+            imageInput.addEventListener('change', function(event) {
+                // Check if a file was selected
+                if (event.target.files && event.target.files[0]) {
+                    // Create a URL for the selected file
+                    const imageURL = URL.createObjectURL(event.target.files[0]);
+    
+                    // Set the image source to the created URL
+                    previewImage.src = imageURL;
+    
+                    // Show the image element
+                    previewImage.style.display = 'block';
+                }
+            });
+        </script>
+
+        <script>
+            function clearForm() {
+                document.getElementById("myForm").reset();
+            }
+        </script>
+
+
+        <br>
+        <br>
+
+    </div>
+
+    <div id="loading-modal" class="modal">
+        <div class="modal-content">
+          <span class="close">&times;</span>
+          <img id="loading-gif" src="{% static 'img/dog-dogs.gif'%}" alt="Loading GIF" height="50px" width="50px">
+        </div>
+      </div>
+
+      <script>
+        document.addEventListener('DOMContentLoaded', function() {
+          const loadingModal = document.getElementById('loading-modal');
+          const loadingGif = document.getElementById('loading-gif');
+        
+          loadingModal.style.display = 'block';
+        
+          window.onload = function() {
+            console.log("jsdbdb")
+            loadingGif.style.animationPlayState = 'running';
+          };
+          console.log("xxxx")
+
+          loadingModal.style.display = 'none';
+          loadingGif.style.animationPlayState = 'paused';
+
+        });
+        </script>
+
+</body>
+
+</html>
